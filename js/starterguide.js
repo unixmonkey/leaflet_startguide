@@ -12,7 +12,7 @@ var map = L.map('map').setView([ 39.769113, -86.158895], 11);
   var markerA = L.marker([ 39.896091, -86.048474]);
   markerA.addTo(map);
 	markerA.bindPopup("<b>Messer Construction</b><br />Left this location.");
-  markerA.on('click', deleteLine);
+  markerA.on('click', onClick);
 
 
 
@@ -20,26 +20,22 @@ var map = L.map('map').setView([ 39.769113, -86.158895], 11);
   var markerB = L.marker([ 39.769113, -86.158895]);
   markerB.addTo(map);
   markerB.bindPopup("<b>Messer Construction</b><br />Moved to CBD.");
-  markerA.on('click', deleteLine);
+  markerA.on('click', onClick);
 
 //start line animaiton script
  	var newLine;
 
-	function deleteLine (e) {
-		  if (newLine != undefined) {
-					e.markerA.removeLayer(newLine);
-			}else{
-
-				e.markerA.on('click', onClick);
+	function deleteLine() {
+		  if (newLine !== undefined) {
+          map.removeLayer(newLine);
 			};
-
 	};
 
 
 // created an onclick function to start line animation when a marker is clicked.
   function onClick(e){
 
-
+      deleteLine(e);
 
       if (map.tap) map.tap.disable();
 
@@ -57,7 +53,7 @@ var map = L.map('map').setView([ 39.769113, -86.158895], 11);
           // Leaflet expects [lat,lng] arrays, but a lot of
           // software does the opposite, including arc.js, so
           // we flip here.
-            this.newLine = L.polyline(line.geometries[0].coords.map(function(c) {
+            newLine = L.polyline(line.geometries[0].coords.map(function(c) {
             return c.reverse();
           }), {
             color: '#bc141a',
